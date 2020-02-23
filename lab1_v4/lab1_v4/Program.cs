@@ -1,80 +1,155 @@
 ﻿using System;
 using System.Collections.Generic;
+//using System.Text;
 using System.IO;
-using System.Xml.Serialization;
-using System.Xml;
-using System.Text;
 using System.Linq;
+//using System.Xml;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace lab1
 {
-    [XmlInclude(typeof(Waged))]
-    [XmlInclude(typeof(Salaried))]
-    public abstract class OrganisationBC //abstract means that it's just a base class, it can contain abstract methods
+    [XmlInclude(typeof(Residential))]
+    [XmlInclude(typeof(NonResidential))]
+    public abstract class ManagementCompanyBC //abstract means that it's just a base class, it can contain abstract methods
     {
-        public int ID { get; set; }
+        public int Apartment { get; set; }
         public string Type { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string Building { get; set; }
+        public string Street { get; set; }
         public string LastName { get; set; }
         public string Bday { get; set; }
         public string Post { get; set; }
-        public double Wage { get; set; }
+        public double Area { get; set; }
         public double Bounty { get; set; }
-        public double Earnings { get; set; }
-        public double TotalPayment { get; set; }
-        public abstract void Payment();
+        public double ANoP { get; set; }
+        //public double TotalPayment { get; set; }
+        public abstract void AverageNumberOfPeople();
         public override string ToString() //overrides ToString() method in order to output string that contains multiple vars
         {
-            return ID + " " + Type + " " + Surname + " " + Name + " " + LastName + " " + Bday + " " + Post + " " + Wage + " " + Bounty + " " + Earnings;
+            string FormattedString = string.Format("{0,-16}{1,-22}{2,-11}{3,-12}{4,-11}{5,-6}", Type, Street, Building, Apartment, Area, ANoP);
+            return FormattedString;
         }
-        public class Waged : OrganisationBC //derived from abstract class organisationbc
+        public class Residential : ManagementCompanyBC //derived from abstract class mancompbc
         {
-            public override void Payment()
+            public override void AverageNumberOfPeople()
             {
-                Earnings = Wage * 20.8 * 8 + Bounty;
+                ANoP = Area * 20.8 * 8 + Bounty;
             }
         }
-        public class Salaried : OrganisationBC
+        public class NonResidential : ManagementCompanyBC
         {
-            public override void Payment()
+            public override void AverageNumberOfPeople()
             {
-                Earnings = Wage + Bounty;
+                ANoP = Area * 0.2;
             }
         }
         internal class VoidMain
         {
-            public static List<OrganisationBC> EmployeesList { get; } = new List<OrganisationBC>();
-            private static void SerializeObject()
+            public static List<ManagementCompanyBC> PropertyList { get; } = new List<ManagementCompanyBC>();
+            private static void SerializeObject() //file export
             {
-                XmlSerializer Serializer = new XmlSerializer(typeof(List<OrganisationBC>)); //create an xmlserializer to serialize string int xml text
-                Stream filestream = new FileStream(Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "hehe.xml"), FileMode.Create); //open a filestream
-                XmlWriter Writer = new XmlTextWriter(filestream, Encoding.Unicode); //serialize using the XmlTextWriter
-                Serializer.Serialize(Writer, VoidMain.EmployeesList);
-                Writer.Close();
-                Console.WriteLine("\nFile is accessible via path: \"" + Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal) + "/hehe.xml\""));
+                Console.Clear();
+                Console.WriteLine("Enter file path and name followed by extension. Or you can leave file path blank and enter filename only, that will cause file to be created in OS default folder. Both JSON and XML extensions are supported:\n");
+            wrongfileoutputextension:
+                string filename = Console.ReadLine();
+                if (!(filename.ToLower().IndexOf('\\') != -1))
+                {
+                    filename = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
+                }
+                if (filename.Substring(filename.Length - 4) == ".xml")
+                {
+                    using (StreamWriter filestream = File.CreateText(filename))
+                    {
+                        XmlSerializer XMLSerializer = new XmlSerializer(typeof(List<ManagementCompanyBC>));
+                        XMLSerializer.Serialize(filestream, PropertyList);
+                    }
+                }
+                else if (filename.Substring(filename.Length - 5) == ".json")
+                { 
+                    using (StreamWriter filestream = File.CreateText(filename))
+                    {
+                        JsonSerializer JSONSerializer = new JsonSerializer();
+                        JSONSerializer.Serialize(filestream, PropertyList);
+                    }
+                } 
+                else
+                {
+                    Console.WriteLine("Wrong file extension, please use .json and .xml only. Enter file name:\n");
+                    goto wrongfileoutputextension;
+                }
+                Console.WriteLine("\nFile is accessible via path: \"" + filename + "\"\n\nPress any key to get back to main menu");
+            }
+            private static void DeSerializeObject() //file import
+            {
+                if (PropertyList.Any()) //check if list is not empty and promt to save current configuration
+                {
+                    Console.WriteLine("Current property list is not empty, do you want to save it? Type Y/N:");
+                    if (Console.Read() == 'y' && Console.Read() == 'Y')
+                    {
+                        SerializeObject();
+                        Console.WriteLine("Successfully saved.");
+                    }
+
+                }
+                Console.WriteLine("Enter file path and name followed by extension. Or you can leave file path blank and enter filename only, path will be considered as OS default folder. Both JSON and XML extensions are supported:\n");
+            wrongfileinputextension:
+                string filename = Console.ReadLine();
+                if (!(filename.ToLower().IndexOf('\\') != -1))
+                {
+                    filename = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
+                }
+                string UnparsedString = File.ReadAllText(filename);
+                if (filename.Substring(filename.Length - 4) == ".xml")
+                {
+                    /*
+                    using (StreamWriter filestream = File.CreateText(filename))
+                    {
+                        XmlSerializer XMLSerializer = new XmlSerializer(typeof(List<ManagementCompanyBC>));
+                        XMLSerializer.Serialize(filestream, PropertyList);
+                    }
+                    */
+                }
+                else if (filename.Substring(filename.Length - 5) == ".json")
+                {
+                    
+                   // VoidMain.PropertyList = JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(UnparsedString);
+                    /*
+                    using (StreamWriter filestream = File.CreateText(filename))
+                    {
+                        JsonSerializer JSONSerializer = new JsonSerializer();
+                        JSONSerializer.Serialize(filestream, PropertyList);
+                    }
+                    */
+                }
+                else
+                {
+                    Console.WriteLine("Wrong file extension, please use .json and .xml files only. Enter file name:\n");
+                    goto wrongfileinputextension;
+                }
+                Console.WriteLine("\nFile is accessible via path: \"" + filename + "\"");
             }
             private static void AddToList()
             {
                 string line = Console.ReadLine();
                 string[] fields = line.Split(' ');
             wrongpayment:
-                if (fields[1] == "Waged")
+                if (fields[0] == "Residential")
                 {
-                    Waged waged = new Waged { ID = int.Parse(fields[0]), Type = fields[1], Surname = fields[2], Name = fields[3], LastName = fields[4], Bday = fields[5], Post = fields[6], Wage = double.Parse(fields[7]), Bounty = double.Parse(fields[8]) };
-                    waged.Payment();
-                    VoidMain.EmployeesList.Add(waged);
+                    Residential residential = new Residential { Type = fields[0], Street = fields[1], Building = fields[2], Apartment = int.Parse(fields[3]), Area = double.Parse(fields[4]) };
+                    residential.AverageNumberOfPeople();
+                    VoidMain.PropertyList.Add(residential);
                 }
-                else if (fields[1] == "Salaried")
+                else if (fields[0] == "Non-Residential")
                 {
-                    Salaried salaried = new Salaried { ID = int.Parse(fields[0]), Type = fields[1], Surname = fields[2], Name = fields[3], LastName = fields[4], Bday = fields[5], Post = fields[6], Wage = double.Parse(fields[7]), Bounty = double.Parse(fields[8]) };
-                    salaried.Payment();
-                    VoidMain.EmployeesList.Add(salaried);
+                    NonResidential nonresidential = new NonResidential { Type = fields[0], Street = fields[1], Building = fields[2], Apartment = int.Parse(fields[3]), Area = double.Parse(fields[4]) };
+                    nonresidential.AverageNumberOfPeople();
+                    VoidMain.PropertyList.Add(nonresidential);
                 }
                 else
                 {
-                    Console.WriteLine("Wrong payment type! Specify it again separately: ");
-                    fields[1] = Console.ReadLine();
+                    Console.WriteLine("Wrong property type! Specify it again: ");
+                    fields[0] = Console.ReadLine();
                     goto wrongpayment;
                 }
             }
@@ -82,41 +157,55 @@ namespace lab1
             {
 
             }
+            private static void DrawMenu()
+            {
+                Console.Clear();
+                Console.WriteLine("1. Show current list\n2. Show xxx files\n3. Show xxx files\n4. Add a new entry to property list\n5. Export current property list\n6. Import new property list from file\n0. Exit\n");
+            }
             private static int Main(string[] args)
             {
                 while (true)
                 {
                     SortList();
                 badinput:
+                    DrawMenu();
                     var i = Console.ReadLine();
                     switch (i)
                     {
                         case "0": return (0);
                         case "1":
                             {
-                                Console.WriteLine();
-                                Console.WriteLine("Surname Name LastName Bday Post Wage Bounty Earnings");
-                                foreach (OrganisationBC listline in EmployeesList)
+                                Console.Clear();
+                                Console.WriteLine("Property type:  Street:               Building:  Apartment:  Area:      ANoP:  \n");
+                                foreach (ManagementCompanyBC listline in PropertyList) //this will cause overrided ToString() method to be executed
                                 {
                                     Console.WriteLine(listline);
                                 }
+                                Console.WriteLine("\nPress any key to get back to main menu");
+                                Console.ReadKey();
+                                DrawMenu();
                             }
                             break;
                         case "2":
-                            Console.WriteLine();
+                            { Console.WriteLine(); DrawMenu(); }
                             break;
                         case "3":
-                            Console.WriteLine();
+                            { Console.WriteLine(); DrawMenu(); }
                             break;
                         case "4":
-                            AddToList();
+                            { AddToList(); DrawMenu(); }
                             break;
                         case "5":
-                            SerializeObject();
+                            { SerializeObject(); Console.ReadKey(); DrawMenu(); }
+                            break;
+                        case "6":
+                            { DeSerializeObject(); Console.ReadKey(); DrawMenu(); }
                             break;
                         default:
                             {
-                                Console.WriteLine("Wrong choice! Try again:");
+                                Console.Clear();
+                                Console.WriteLine("Wrong choice!\nPress any key to get back to main menu");
+                                Console.ReadKey();
                                 goto badinput;
                             }
                     }
@@ -127,6 +216,11 @@ namespace lab1
 }
 
 /*
+XmlSerializer XMLSerializer = new XmlSerializer(typeof(List<ManagementCompanyBC>)); //create an xmlserializer to serialize string int xml text
+Stream filestream = new FileStream(path, FileMode.Create); //open a filestream
+XmlWriter Writer = new XmlTextWriter(filestream, Encoding.Unicode); //serialize using the XmlTextWriter
+XMLSerializer.Serialize(Writer, VoidMain.PropertyList);
+Writer.Close();
          if (type == false)
          {
              summary=20.8*8*stake + Bounty;

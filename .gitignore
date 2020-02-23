@@ -8,3 +8,11 @@ lab1/lab1/obj/Debug/netcoreapp2.1/
 lab1/lab1/bin/Debug/netcoreapp2.1/
 
 lab1/lab1/obj/
+
+lab1_v4/lab1_v4/obj/
+
+*.csproj
+
+lab1_v4/.vs/lab1_v4/v16/
+
+lab1_v4/.vs/lab1_v4/DesignTimeBuild/.dtbcache
