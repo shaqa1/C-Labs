@@ -13,35 +13,35 @@ namespace lab1
     [XmlInclude(typeof(NonResidential))]
     public abstract class ManagementCompanyBC //abstract means that it's just a base class, it can contain abstract methods
     {
-        public int Apartment { get; set; }
+        public int NumberOfApartments { get; set; }
         public string Type { get; set; }
         public string Building { get; set; }
         public string Street { get; set; }
         public string LastName { get; set; }
         public string Bday { get; set; }
         public string Post { get; set; }
-        public double Area { get; set; }
+        public double RoomsOrArea { get; set; }
         public double Bounty { get; set; }
         public double ANoP { get; set; }
         //public double TotalPayment { get; set; }
         public abstract void AverageNumberOfPeople();
         public override string ToString() //overrides ToString() method in order to output string that contains multiple vars
         {
-            string FormattedString = string.Format("{0,-16}{1,-22}{2,-11}{3,-12}{4,-11}{5,-6}", Type, Street, Building, Apartment, Area, ANoP);
+            string FormattedString = string.Format("{0,-16}{1,-22}{2,-11}{3,-12}{4,-11}{5,-6}", Type, Street, Building, NumberOfApartments, RoomsOrArea, ANoP);
             return FormattedString;
         }
         public class Residential : ManagementCompanyBC //derived from abstract class mancompbc
         {
             public override void AverageNumberOfPeople()
             {
-                ANoP = Area * 20.8 * 8 + Bounty;
+                ANoP = RoomsOrArea * 20.8 * 8 + Bounty;
             }
         }
         public class NonResidential : ManagementCompanyBC
         {
             public override void AverageNumberOfPeople()
             {
-                ANoP = Area * 0.2;
+                ANoP = RoomsOrArea * 0.2;
             }
         }
         internal class VoidMain
@@ -131,18 +131,20 @@ namespace lab1
             }
             private static void AddToList()
             {
+                Console.WriteLine("Adding an entry to property list\nEnter property type (R for Residential/N for Non-residential");
+                Console.WriteLine("Property type Street Building NoA Area/Rooms\n");
                 string line = Console.ReadLine();
                 string[] fields = line.Split(' ');
             wrongpayment:
                 if (fields[0] == "Residential")
                 {
-                    Residential residential = new Residential { Type = fields[0], Street = fields[1], Building = fields[2], Apartment = int.Parse(fields[3]), Area = double.Parse(fields[4]) };
+                    Residential residential = new Residential { Type = fields[0], Street = fields[1], Building = fields[2], NumberOfApartments = int.Parse(fields[3]), RoomsOrArea = double.Parse(fields[4]) };
                     residential.AverageNumberOfPeople();
                     VoidMain.PropertyList.Add(residential);
                 }
                 else if (fields[0] == "Non-Residential")
                 {
-                    NonResidential nonresidential = new NonResidential { Type = fields[0], Street = fields[1], Building = fields[2], Apartment = int.Parse(fields[3]), Area = double.Parse(fields[4]) };
+                    NonResidential nonresidential = new NonResidential { Type = fields[0], Street = fields[1], Building = fields[2], RoomsOrArea = double.Parse(fields[3]) };
                     nonresidential.AverageNumberOfPeople();
                     VoidMain.PropertyList.Add(nonresidential);
                 }
@@ -176,7 +178,7 @@ namespace lab1
                         case "1":
                             {
                                 Console.Clear();
-                                Console.WriteLine("Property type:  Street:               Building:  Apartment:  Area:      ANoP:  \n");
+                                Console.WriteLine("Property type:  Street:               Building:  NoA:  Area/Rooms:      ANoP:  \n");
                                 foreach (ManagementCompanyBC listline in PropertyList) //this will cause overrided ToString() method to be executed
                                 {
                                     Console.WriteLine(listline);
