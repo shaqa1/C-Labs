@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
@@ -104,7 +102,6 @@ namespace lab1
                 }
             }
         }
-        //public static List<ManagementCompanyBC> PropertyList { get; set; } = new List<ManagementCompanyBC>();
         public static void SerializeObject() //file export
         {
             Console.Clear();
@@ -117,20 +114,17 @@ namespace lab1
             }
             if (filename.Substring(filename.Length - 4) == ".xml")
             {
-                using (StreamWriter filestream = File.CreateText(filename))
-                {
-                    XmlSerializer XMLSerializer = new XmlSerializer(typeof(List<ManagementCompanyBC>));
-                    XMLSerializer.Serialize(filestream, List.PropertyList);
-                }
+                using StreamWriter filestream = File.CreateText(filename);
+                XmlSerializer XMLSerializer = new XmlSerializer(typeof(List<ManagementCompanyBC>));
+                XMLSerializer.Serialize(filestream, List.PropertyList);
             }
+            /*THIS METHOD OF SERIALIZING TO JSON IN UNSAFE AND SHOULD NOT BE USED IN REAL LIFE APPLICATIONS*/
             else if (filename.Substring(filename.Length - 5) == ".json")
             {
-                using (StreamWriter filestream = File.CreateText(filename))
-                {
-                    JsonSerializer JSONSerializer = new JsonSerializer();
-                    JSONSerializer.Serialize(filestream, List.PropertyList);
-                }
+                var JSONSerializerOptions = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
+                File.WriteAllText(filename, JsonConvert.SerializeObject(List.PropertyList, JSONSerializerOptions));
             }
+            /*END OF DANGEROUS METHOD*/
             else
             {
                 Console.WriteLine("Wrong file extension, please use .json and .xml only. Enter file name:\n");
@@ -149,29 +143,22 @@ namespace lab1
                     SerializeObject();
                     Console.WriteLine("Successfully saved.");
                 }
+                else Console.Clear();
             }
-            Console.Clear();
             Console.WriteLine("Enter file path and name followed by extension. Or you can leave file path blank and enter filename only, path will be considered as OS default folder. Both JSON and XML extensions are supported:\n");
         wrongfileinputextension:
             string filename = Console.ReadLine();
-            if (!(filename.ToLower().IndexOf('\\') != -1))
-            {
-                filename = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
-            }
-            string UnparsedString = File.ReadAllText(filename);
+            if (!(filename.ToLower().IndexOf('\\') != -1)) filename = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
             if (filename.Substring(filename.Length - 4) == ".xml")
             {
                 XmlSerializer XMLSerializer = new XmlSerializer(typeof(List<ManagementCompanyBC>));
-                using (Stream filestream = new FileStream(filename, FileMode.Open)) List.PropertyList = (List<ManagementCompanyBC>)XMLSerializer.Deserialize(filestream); //call the Deserialize method to restore the object's state
+                using Stream filestream = new FileStream(filename, FileMode.Open);
+                List.PropertyList = (List<ManagementCompanyBC>)XMLSerializer.Deserialize(filestream); //call the Deserialize method to restore the object's state
             }
             else if (filename.Substring(filename.Length - 5) == ".json")
             {
-                List.PropertyList = JsonConvert.DeserializeObject<List<ManagementCompanyBC>>
-                (File.ReadAllText(filename), new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto,
-                    NullValueHandling = NullValueHandling.Ignore,
-                }); 
+                var JSONDeSerializerOptions = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
+                List.PropertyList = JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(File.ReadAllText(filename), JSONDeSerializerOptions);
             }
             else
             {
@@ -228,3 +215,4 @@ namespace lab1
         }
     }
 }
+/
