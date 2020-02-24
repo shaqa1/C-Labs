@@ -15,6 +15,7 @@ namespace lab1
         public string Building { get; set; }
         public string Street { get; set; }
         public double ANoP { get; set; }
+        public static double SumOfANoP { get; set; }
         public abstract void AverageNumberOfPeople();    
     }
     public class Residential : ManagementCompanyBC //derived from abstract class mancompbc
@@ -49,7 +50,7 @@ namespace lab1
     internal class Program
     {
         public static CreatePropertyList List = new CreatePropertyList();
-        private static void Main()
+        private static int Main()
         {
             while (true)
             {
@@ -59,25 +60,19 @@ namespace lab1
                 var i = Console.ReadLine();
                 switch (i)
                 {
-                    case "0": break;//return (0);
+                    case "0": return (0);
                     case "1":
                         {
-                            Console.Clear();
-                            Console.WriteLine("Property type:   Street:               House number:  NoA:  RpA:  Area:  ANoP:\n");
-                            foreach (ManagementCompanyBC listline in List.PropertyList) //this will cause overrided ToString() method to be executed
-                            {
-                                Console.WriteLine(listline);
-                            }
-                            DrawMenu(false);
+                            DrawHeader();
+                            foreach (ManagementCompanyBC listline in List.PropertyList) Console.WriteLine(listline);
+                            Console.WriteLine("\nSum of ANoP:" + ManagementCompanyBC.SumOfANoP.ToString().PadLeft(68));
                         }
                         break;
-                    case "2":
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Property type:   Street:               House number:  NoA:  RpA:  Area:  ANoP:\n");
+                    case "2": 
+                        { 
+                            DrawHeader(); 
                             if (List.PropertyList.Count() < 4) for (int y = 0; y < List.PropertyList.Count(); y++) Console.WriteLine(List.PropertyList[y]);
                             else for (int y = 0; y < 3; y++) Console.WriteLine(List.PropertyList[y]);
-                            DrawMenu(false);
                         }
                         break;
                     case "3":
@@ -86,21 +81,38 @@ namespace lab1
                             Console.WriteLine("Street:               House number:\n");
                             if (List.PropertyList.Count() < 5) for (int y = 0; y < List.PropertyList.Count(); y++) Console.WriteLine("{0,-22}{1, -9}", List.PropertyList[y].Street, List.PropertyList[y].Building);
                             else for (int y = List.PropertyList.Count() - 4; y < List.PropertyList.Count(); y++) Console.WriteLine("{0,-22}{1, -9}", List.PropertyList[y].Street, List.PropertyList[y].Building);
-                            DrawMenu(false);
                         }
                         break;
-                    case "4":
-                        { AddToList(); DrawMenu(false); }
-                        break;
-                    case "5":
-                        { SerializeObject(); DrawMenu(false); }
-                        break;
-                    case "6":
-                        { DeSerializeObject(); DrawMenu(false); }
-                        break;
+                    case "4": AddToList(); break;
+                    case "5": SerializeObject(); break;
+                    case "6": DeSerializeObject(); break;
                     default: goto badchoice;
                 }
+                DrawMenu(false);
             }
+        }
+        public static void DrawMenu(bool start)
+        {
+            if (start) Console.Clear();
+            else
+            {
+                Console.WriteLine("\nPress any key to get back to main menu...");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            Console.WriteLine("1. Show current list\n2. Show xxx files\n3. Show xxx files\n4. Add a new entry to property list\n5. Export current property list\n6. Import new property list from file\n0. Exit\n");
+        }
+        public static void DrawHeader() { Console.Clear(); Console.WriteLine("Property type:   Street:               House number:  NoA:  RpA:  Area:  ANoP:\n"); }
+        public static bool Promt(string promt)
+        {
+            bool decision;
+        tryagain:
+            Console.WriteLine(promt);
+            string Decision = Console.ReadLine();
+            if (Decision == "y" || Decision == "Y") decision = true;
+            else if (Decision == "n" || Decision == "N") decision = false;
+            else goto tryagain;
+            return decision;
         }
         public static void SerializeObject() //file export
         {
@@ -135,36 +147,17 @@ namespace lab1
         public static void DeSerializeObject() //file import
         {
             Console.Clear();
-            if (List.PropertyList.Any()) //check if list is not empty and promt to save current configuration
-            {
-                Console.WriteLine("Current property list is not empty, do you want to save it? Type Y/N:");
-                if (Console.ReadLine() == "y" || Console.ReadLine() == "Y")
-                {
-                    SerializeObject();
-                    Console.WriteLine("Successfully saved.");
-                }
-                else Console.Clear();
-            }
+            if (List.PropertyList.Any() && Promt("Current property list is not empty, do you want to save it? Type Y/N:") == true) { SerializeObject(); Console.WriteLine("Successfully saved."); }
+            else Console.Clear();
             Console.WriteLine("Enter file path and name followed by extension. Or you can leave file path blank and enter filename only, path will be considered as OS default folder. Both JSON and XML extensions are supported:\n");
         wrongfileinputextension:
             string filename = Console.ReadLine();
             if (!(filename.ToLower().IndexOf('\\') != -1)) filename = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), filename);
-            if (filename.Substring(filename.Length - 4) == ".xml")
-            {
-                XmlSerializer XMLSerializer = new XmlSerializer(typeof(List<ManagementCompanyBC>));
-                using Stream filestream = new FileStream(filename, FileMode.Open);
-                List.PropertyList = (List<ManagementCompanyBC>)XMLSerializer.Deserialize(filestream); //call the Deserialize method to restore the object's state
-            }
-            else if (filename.Substring(filename.Length - 5) == ".json")
-            {
-                var JSONDeSerializerOptions = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
-                List.PropertyList = JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(File.ReadAllText(filename), JSONDeSerializerOptions);
-            }
-            else
-            {
-                Console.WriteLine("Wrong file extension, please use .json and .xml files only. Enter file name:\n");
-                goto wrongfileinputextension;
-            }
+            if (File.Exists(filename) && filename.Substring(filename.Length - 4) == ".xml") if (List.PropertyList.Any() && Promt("Do you want to merge current list with imported one? Type Y/N:")) List.PropertyList = List.PropertyList.Concat((List<ManagementCompanyBC>)new XmlSerializer(typeof(List<ManagementCompanyBC>)).Deserialize(new FileStream(filename, FileMode.Open))).ToList(); 
+                else List.PropertyList = (List<ManagementCompanyBC>)new XmlSerializer(typeof(List<ManagementCompanyBC>)).Deserialize(new FileStream(filename, FileMode.Open));
+            else if (File.Exists(filename) && filename.Substring(filename.Length - 5) == ".json") if (List.PropertyList.Any() && Promt("Do you want to merge current list with imported one? Type Y/N:")) List.PropertyList = List.PropertyList.Concat(JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(File.ReadAllText(filename), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All })).ToList();
+                else List.PropertyList = JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(File.ReadAllText(filename), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+            else { Console.WriteLine("\nWrong file path, name or extension, please use .json and .xml files only. Enter file name again:\n"); goto wrongfileinputextension; }
             Console.WriteLine("\nFile import succeeded.");
         }
         public static void AddToList()
@@ -172,6 +165,7 @@ namespace lab1
             Console.Clear();
             Console.WriteLine("Adding an entry to property list");
             Console.WriteLine("Enter property type: 'R' for Residential / 'N' for Non-residential\n");
+        wrongrnchoice:
             string choice = Console.ReadLine();
             if (choice == "R" || choice == "r")
             {
@@ -193,26 +187,12 @@ namespace lab1
                 List.PropertyList.Add(nonresidential);
                 Console.WriteLine("Successfully added.");
             }
-            else
-            {
-                Console.Clear(); Console.WriteLine("Wrong choice!");
-            }
+            else { Console.Clear(); Console.WriteLine("\nWrong choice! Enter it again, 'R' for Residential / 'N' for Non-residential:\n"); goto wrongrnchoice; }
         }
         public static void SortList()
         {
             List.PropertyList = List.PropertyList.OrderBy(o => o.ANoP).ToList();
-        }
-        public static void DrawMenu(bool start)
-        {
-            if (start) Console.Clear();
-            else
-            {
-                Console.WriteLine("\nPress any key to get back to main menu...");
-                Console.ReadKey();
-                Console.Clear();
-            }
-            Console.WriteLine("1. Show current list\n2. Show xxx files\n3. Show xxx files\n4. Add a new entry to property list\n5. Export current property list\n6. Import new property list from file\n0. Exit\n");
+            foreach (ManagementCompanyBC listline in List.PropertyList) ManagementCompanyBC.SumOfANoP += listline.ANoP;
         }
     }
 }
-/
