@@ -159,6 +159,7 @@ namespace lab1
         public static void SortList()
         {
             List.PropertyList = List.PropertyList.OrderBy(o => o.ANoP).ToList();
+            ManagementCompanyBC.SumOfANoP = 0; 
             foreach (ManagementCompanyBC listline in List.PropertyList) ManagementCompanyBC.SumOfANoP += listline.ANoP;
         }
     }
