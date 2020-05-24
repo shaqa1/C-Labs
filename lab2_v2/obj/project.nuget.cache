@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8fljet+l9CF9mFaH3dU5p8Bmas/o0tl08V5w9zDLzenIcXca2gI3KFLWmJtwuMwuqEgLPngxNeItMrvbHY0MzQ==",
+  "dgSpecHash": "7bAH69lTiJnTnRCplLqzKEYjq35ZBl9fBjU5ay5dA8xLpVDTbXNOOYq9a1wYwrn8RUJ0/3RHoON7f+D9OJKvhw==",
   "success": true,
-  "projectFilePath": "C:\\cpp\\GIT_REPOS\\C# Labs\\lab2_v4\\lab2_v4.csproj",
+  "projectFilePath": "C:\\cpp\\GIT_REPOS\\C# Labs\\lab2_v2\\lab2_v2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fpv55\\.nuget\\packages\\csquery\\1.3.4\\csquery.1.3.4.nupkg.sha512"
   ],

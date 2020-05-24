@@ -4,7 +4,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.IO;
 
-namespace lab2_v4
+namespace lab2_v2
 {
     internal class EmailPicker
     {
