@@ -1,0 +1,15 @@
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\obj\Debug\netcoreapp3.1\lab2_v2.csprojAssemblyReference.cache
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\obj\Debug\netcoreapp3.1\lab2_v2.csproj.CoreCompileInputs.cache
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\obj\Debug\netcoreapp3.1\lab2_v2.AssemblyInfoInputs.cache
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\obj\Debug\netcoreapp3.1\lab2_v2.AssemblyInfo.cs
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\bin\Debug\netcoreapp3.1\lab2_v2.exe
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\bin\Debug\netcoreapp3.1\lab2_v2.deps.json
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\bin\Debug\netcoreapp3.1\lab2_v2.runtimeconfig.json
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\bin\Debug\netcoreapp3.1\lab2_v2.runtimeconfig.dev.json
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\bin\Debug\netcoreapp3.1\lab2_v2.dll
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\bin\Debug\netcoreapp3.1\lab2_v2.pdb
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\bin\Debug\netcoreapp3.1\CsQuery.dll
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\obj\Debug\netcoreapp3.1\lab2_v2.csproj.CopyComplete
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\obj\Debug\netcoreapp3.1\lab2_v2.dll
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\obj\Debug\netcoreapp3.1\lab2_v2.pdb
+C:\cpp\GIT_REPOS\C# Labs\lab2_v2\obj\Debug\netcoreapp3.1\lab2_v2.genruntimeconfig.cache
