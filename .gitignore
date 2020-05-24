@@ -22,3 +22,13 @@ lab1_v4/lab1_v4/bin/Debug/netcoreapp2.1/
 lab1_v4/lab1_v4/bin/Debug/netcoreapp3.1/
 
 *.csv
+
+lab2_v4/bin/Debug/netcoreapp3.1/
+
+lab2_v4/.vs/lab2_v4/v16/
+
+lab2_v4/.vs/lab2_v4/DesignTimeBuild/
+
+lab2_v4/obj/Debug/netcoreapp3.1/
+
+lab2_v4/obj/
