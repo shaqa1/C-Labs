@@ -1,0 +1,4 @@
+C:\cpp\GIT_REPOS\C# Labs\lab1_v2\lab1_v2\bin\Debug\netcoreapp3.1\lab1_v2.exe
+C:\cpp\GIT_REPOS\C# Labs\lab1_v2\lab1_v2\obj\Debug\netcoreapp3.1\lab1_v2.csprojAssemblyReference.cache
+C:\cpp\GIT_REPOS\C# Labs\lab1_v2\lab1_v2\obj\Debug\netcoreapp3.1\lab1_v2.AssemblyInfoInputs.cache
+C:\cpp\GIT_REPOS\C# Labs\lab1_v2\lab1_v2\obj\Debug\netcoreapp3.1\lab1_v2.AssemblyInfo.cs

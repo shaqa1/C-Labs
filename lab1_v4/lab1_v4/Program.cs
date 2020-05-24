@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema.Generation;
+using System;
 
 namespace lab1
 {
@@ -20,7 +20,7 @@ namespace lab1
         public int Building { get; set; }
         public double ANoP { get; set; }
         public static double SumOfANoP { get; set; }
-        public abstract void AverageNumberOfPeople();    
+        public abstract void AverageNumberOfPeople();
     }
     public class Residential : ManagementCompanyBC
     {
@@ -49,35 +49,35 @@ namespace lab1
                 DrawMenu(true);
                 ConsoleKeyInfo input = Console.ReadKey();
                 if (char.IsDigit(input.KeyChar))
-                switch (int.Parse(input.KeyChar.ToString()))
-                {
-                    case 0 : return (0);
-                    case 1 :
-                        {
-                            DrawHeader();
-                            foreach (ManagementCompanyBC listline in PropertyList) Console.WriteLine(listline);
-                            Console.WriteLine("\nSum of ANoP:" + ManagementCompanyBC.SumOfANoP.ToString().PadLeft(68));
-                        }
-                        break;
-                    case 2 : 
-                        { 
-                            DrawHeader(); 
-                            if (PropertyList.Count() < 4) for (int y = 0; y < PropertyList.Count(); y++) Console.WriteLine(PropertyList[y]);
-                            else for (int y = 0; y < 3; y++) Console.WriteLine(PropertyList[y]);
-                        }
-                        break;
-                    case 3 :
-                        {
-                            ClearDraw("Street:               House number:\n");
-                            if (PropertyList.Count() < 5) for (int y = 0; y < PropertyList.Count(); y++) Console.WriteLine("{0,-22}{1, -9}", PropertyList[y].Street, PropertyList[y].Building);
-                            else for (int y = PropertyList.Count() - 4; y < PropertyList.Count(); y++) Console.WriteLine("{0,-22}{1, -9}", PropertyList[y].Street, PropertyList[y].Building);
-                        }
-                        break;
-                    case 4: AddToList(); break;
-                    case 5: SerializeObject(); break;
-                    case 6: DeSerializeObject(); break;
-                    default: goto badchoice;
-                }
+                    switch (int.Parse(input.KeyChar.ToString()))
+                    {
+                        case 0: return (0);
+                        case 1:
+                            {
+                                DrawHeader();
+                                foreach (ManagementCompanyBC listline in PropertyList) Console.WriteLine(listline);
+                                Console.WriteLine("\nSum of ANoP:" + ManagementCompanyBC.SumOfANoP.ToString().PadLeft(68));
+                            }
+                            break;
+                        case 2:
+                            {
+                                DrawHeader();
+                                if (PropertyList.Count() < 4) for (int y = 0; y < PropertyList.Count(); y++) Console.WriteLine(PropertyList[y]);
+                                else for (int y = 0; y < 3; y++) Console.WriteLine(PropertyList[y]);
+                            }
+                            break;
+                        case 3:
+                            {
+                                ClearDraw("Street:               House number:\n");
+                                if (PropertyList.Count() < 5) for (int y = 0; y < PropertyList.Count(); y++) Console.WriteLine("{0,-22}{1, -9}", PropertyList[y].Street, PropertyList[y].Building);
+                                else for (int y = PropertyList.Count() - 4; y < PropertyList.Count(); y++) Console.WriteLine("{0,-22}{1, -9}", PropertyList[y].Street, PropertyList[y].Building);
+                            }
+                            break;
+                        case 4: AddToList(); break;
+                        case 5: SerializeObject(); break;
+                        case 6: DeSerializeObject(); break;
+                        default: goto badchoice;
+                    }
                 else goto badchoice;
                 DrawMenu(false);
             }
@@ -135,8 +135,8 @@ namespace lab1
                     else PropertyList = (List<ManagementCompanyBC>)XMLSerializer.Deserialize(filestream);
 
                 else if (Path.GetExtension(filename) == ".json" && JsonValidate(streamstring))
-                if (PropertyList.Any() && Promt("Do you want to merge current list with imported one? Type y/n:", 'y', 'n')) PropertyList = PropertyList.Concat(JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(streamstring, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All })).ToList();
-                else PropertyList = JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(streamstring, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
+                    if (PropertyList.Any() && Promt("Do you want to merge current list with imported one? Type y/n:", 'y', 'n')) PropertyList = PropertyList.Concat(JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(streamstring, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All })).ToList();
+                    else PropertyList = JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(streamstring, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
 
                 else { ClearDraw("Wrong file structure, path, name or extension, please use correct xml or json structure.\nEnter file name again:\n"); filestream.Close(); goto wrongfileimport; }
                 // Console.WriteLine(new JSchemaGenerator().Generate(typeof(List<ManagementCompanyBC>)).ToString());  
@@ -150,10 +150,10 @@ namespace lab1
             string JsonSchema = "{ 'type': 'object', 'items': { 'type': [ 'object', 'null' ], 'properties': { 'NumberOfApartments': { 'type': 'integer' }, 'Rooms': { 'type': 'integer' }, 'Type': { 'type': [ 'string', 'null' ] }, 'Street': { 'type': [ 'string', 'null' ] }, 'Building': { 'type': 'integer' }, 'ANoP': { 'type': 'number' }}, 'required': [ 'NumberOfApartments', 'Rooms', 'Type', 'Street', 'Building', 'ANoP'] }}";
 
             //JSchemaValidatingReader validatingReader = new JSchemaValidatingReader(new JsonTextReader(new StringReader(streamstring)));
-          //  validatingReader.Schema = JSchema.Parse(JsonSchema);
+            //  validatingReader.Schema = JSchema.Parse(JsonSchema);
 
             //IList<ValidationError> errors;
-           // bool valid = colors.IsValid(schema, out errors);
+            // bool valid = colors.IsValid(schema, out errors);
             //Console.WriteLine(messages.Count);
             //JsonSerializer serializer = new JsonSerializer();
             //PropertyList = JsonConvert.DeserializeObject<List<ManagementCompanyBC>>(validatingReader, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
@@ -206,7 +206,7 @@ namespace lab1
         public static void SortList()
         {
             PropertyList = PropertyList.OrderBy(o => o.ANoP).ToList();
-            ManagementCompanyBC.SumOfANoP = 0; 
+            ManagementCompanyBC.SumOfANoP = 0;
             foreach (ManagementCompanyBC listline in PropertyList) ManagementCompanyBC.SumOfANoP += listline.ANoP;
         }
     }
