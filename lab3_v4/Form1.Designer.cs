@@ -35,11 +35,11 @@
             this.authbutton = new MetroFramework.Controls.MetroButton();
             this.apirequestbutton = new MetroFramework.Controls.MetroButton();
             this.apirequest = new MetroFramework.Controls.MetroTextBox();
-            this.browserView1 = new DotNetBrowser.WinForms.BrowserView();
             this.apirequestvalue = new MetroFramework.Controls.MetroTextBox();
             this.addparams = new MetroFramework.Controls.MetroButton();
             this.apilink = new MetroFramework.Controls.MetroLabel();
             this.setrequest = new MetroFramework.Controls.MetroButton();
+            this.tbLog = new MetroFramework.Controls.MetroTextBox();
             this.SuspendLayout();
             // 
             // Tray_Icon
@@ -65,7 +65,7 @@
             this.apirequestparam.CustomButton.UseSelectable = true;
             this.apirequestparam.CustomButton.Visible = false;
             this.apirequestparam.Lines = new string[0];
-            this.apirequestparam.Location = new System.Drawing.Point(24, 130);
+            this.apirequestparam.Location = new System.Drawing.Point(23, 101);
             this.apirequestparam.MaxLength = 32767;
             this.apirequestparam.Name = "apirequestparam";
             this.apirequestparam.PasswordChar = '\0';
@@ -84,23 +84,23 @@
             // 
             // authbutton
             // 
-            this.authbutton.Location = new System.Drawing.Point(23, 72);
+            this.authbutton.Location = new System.Drawing.Point(24, 159);
             this.authbutton.Name = "authbutton";
             this.authbutton.Size = new System.Drawing.Size(75, 23);
             this.authbutton.TabIndex = 1;
             this.authbutton.Text = "Log In";
             this.authbutton.UseSelectable = true;
-            this.authbutton.Click += new System.EventHandler(this.Authbutton_Click);
+            this.authbutton.Click += new System.EventHandler(this.Auth_Click);
             // 
             // apirequestbutton
             // 
-            this.apirequestbutton.Location = new System.Drawing.Point(24, 188);
+            this.apirequestbutton.Location = new System.Drawing.Point(104, 159);
             this.apirequestbutton.Name = "apirequestbutton";
             this.apirequestbutton.Size = new System.Drawing.Size(75, 23);
             this.apirequestbutton.TabIndex = 2;
             this.apirequestbutton.Text = "Reqest!";
             this.apirequestbutton.UseSelectable = true;
-            this.apirequestbutton.Click += new System.EventHandler(this.Apirequestbutton_Click);
+            this.apirequestbutton.Click += new System.EventHandler(this.APIRequest_Click);
             // 
             // apirequest
             // 
@@ -117,7 +117,7 @@
             this.apirequest.CustomButton.UseSelectable = true;
             this.apirequest.CustomButton.Visible = false;
             this.apirequest.Lines = new string[0];
-            this.apirequest.Location = new System.Drawing.Point(24, 101);
+            this.apirequest.Location = new System.Drawing.Point(23, 72);
             this.apirequest.MaxLength = 32767;
             this.apirequest.Name = "apirequest";
             this.apirequest.PasswordChar = '\0';
@@ -134,13 +134,6 @@
             this.apirequest.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.apirequest.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             // 
-            // browserView1
-            // 
-            this.browserView1.Location = new System.Drawing.Point(239, 72);
-            this.browserView1.Name = "browserView1";
-            this.browserView1.Size = new System.Drawing.Size(538, 352);
-            this.browserView1.TabIndex = 4;
-            // 
             // apirequestvalue
             // 
             // 
@@ -156,7 +149,7 @@
             this.apirequestvalue.CustomButton.UseSelectable = true;
             this.apirequestvalue.CustomButton.Visible = false;
             this.apirequestvalue.Lines = new string[0];
-            this.apirequestvalue.Location = new System.Drawing.Point(24, 159);
+            this.apirequestvalue.Location = new System.Drawing.Point(23, 130);
             this.apirequestvalue.MaxLength = 32767;
             this.apirequestvalue.Name = "apirequestvalue";
             this.apirequestvalue.PasswordChar = '\0';
@@ -175,13 +168,13 @@
             // 
             // addparams
             // 
-            this.addparams.Location = new System.Drawing.Point(105, 130);
+            this.addparams.Location = new System.Drawing.Point(104, 101);
             this.addparams.Name = "addparams";
             this.addparams.Size = new System.Drawing.Size(75, 52);
             this.addparams.TabIndex = 7;
             this.addparams.Text = "Add";
             this.addparams.UseSelectable = true;
-            this.addparams.Click += new System.EventHandler(this.Addparams_Click);
+            this.addparams.Click += new System.EventHandler(this.AddParams_Click);
             // 
             // apilink
             // 
@@ -193,24 +186,55 @@
             // 
             // setrequest
             // 
-            this.setrequest.Location = new System.Drawing.Point(105, 101);
+            this.setrequest.Location = new System.Drawing.Point(104, 72);
             this.setrequest.Name = "setrequest";
             this.setrequest.Size = new System.Drawing.Size(75, 23);
             this.setrequest.TabIndex = 9;
             this.setrequest.Text = "Set Request";
             this.setrequest.UseSelectable = true;
-            this.setrequest.Click += new System.EventHandler(this.Setrequest_Click);
+            this.setrequest.Click += new System.EventHandler(this.SetRequest_Click);
+            // 
+            // tbLog
+            // 
+            // 
+            // 
+            // 
+            this.tbLog.CustomButton.Image = null;
+            this.tbLog.CustomButton.Location = new System.Drawing.Point(45, 2);
+            this.tbLog.CustomButton.Name = "";
+            this.tbLog.CustomButton.Size = new System.Drawing.Size(105, 105);
+            this.tbLog.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.tbLog.CustomButton.TabIndex = 1;
+            this.tbLog.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.tbLog.CustomButton.UseSelectable = true;
+            this.tbLog.CustomButton.Visible = false;
+            this.tbLog.Lines = new string[0];
+            this.tbLog.Location = new System.Drawing.Point(185, 72);
+            this.tbLog.MaxLength = 32767;
+            this.tbLog.Multiline = true;
+            this.tbLog.Name = "tbLog";
+            this.tbLog.PasswordChar = '\0';
+            this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.tbLog.SelectedText = "";
+            this.tbLog.SelectionLength = 0;
+            this.tbLog.SelectionStart = 0;
+            this.tbLog.ShortcutsEnabled = true;
+            this.tbLog.Size = new System.Drawing.Size(153, 110);
+            this.tbLog.TabIndex = 10;
+            this.tbLog.UseSelectable = true;
+            this.tbLog.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.tbLog.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             // 
             // fox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(363, 205);
+            this.Controls.Add(this.tbLog);
             this.Controls.Add(this.setrequest);
             this.Controls.Add(this.apilink);
             this.Controls.Add(this.addparams);
             this.Controls.Add(this.apirequestvalue);
-            this.Controls.Add(this.browserView1);
             this.Controls.Add(this.apirequest);
             this.Controls.Add(this.apirequestbutton);
             this.Controls.Add(this.authbutton);
@@ -234,11 +258,11 @@
         private MetroFramework.Controls.MetroButton authbutton;
         private MetroFramework.Controls.MetroButton apirequestbutton;
         private MetroFramework.Controls.MetroTextBox apirequest;
-        private DotNetBrowser.WinForms.BrowserView browserView1;
         private MetroFramework.Controls.MetroTextBox apirequestvalue;
         private MetroFramework.Controls.MetroButton addparams;
         private MetroFramework.Controls.MetroLabel apilink;
         private MetroFramework.Controls.MetroButton setrequest;
+        private MetroFramework.Controls.MetroTextBox tbLog;
     }
 }
 

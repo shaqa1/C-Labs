@@ -1,41 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO.Ports;
-using System.Threading;
-using System.Drawing.Drawing2D;
 using MetroFramework.Forms;
-using MetroFramework.Controls;
-using NAudio.CoreAudioApi;
-using Owin;
 using System.Diagnostics;
 using System.Net;
-using DotNetBrowser.Browser;
-using DotNetBrowser.Engine;
-using DotNetBrowser.Navigation;
 using Newtonsoft.Json.Linq;
 using System.IO;
-using Microsoft.Win32;
+using DotNetBrowser.Engine;
+using System.Collections;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace lab3_v4
 {
     public partial class fox : MetroForm
     {
-        private readonly IEngine engine = EngineFactory.Create(new EngineOptions.Builder { LicenseKey = "1BNKDJZJSCZMPTZKWHVDJ65Q3QP48T2PF7SGZB75RJ21CDIAISZO9EP7NUVTSP9CG602LH" }.Build());
-        private readonly IBrowser browser;
-        private INavigation navigation;
-        private const string OAuthURI = "https://oauth.vk.com/authorize";
-        private const string RedirectURI = "https://oauth.vk.com/blank.html";
-        private const int APPID = 7482854;
-        private const double APIversion = 5.103;
+        internal static IEngine engine = EngineFactory.Create(new EngineOptions.Builder { LicenseKey = "1BNKDJZJSCZMPTZKWHVDJ65Q3QP48T2PF7SGZB75RJ21CDIAISZO9EP7NUVTSP9CG602LH" }.Build());
+        public delegate void OAuthDelegate(string accesstoken);
+        internal const string APIversion = "5.103";
         private string GetRequestURI = "https://api.vk.com/method/";
         private static string Token = String.Empty;
+        private static string JSON = String.Empty;
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
@@ -47,87 +32,49 @@ namespace lab3_v4
             if (WindowState == FormWindowState.Minimized) { Show(); WindowState = FormWindowState.Normal; }
             else if (WindowState == FormWindowState.Normal) WindowState = FormWindowState.Minimized;
         }
-
-        private void Authbutton_Click(object sender, EventArgs e)
+        private void HandleToken(string accesstoken) { Token = accesstoken; }
+        private async Task GET_Request()
         {
-            navigation.LoadUrl(
-                OAuthURI +
-                $"?client_id={APPID}" +
-                $"&scope=status,offline,notify,friends,audio" +
-                $"&redirect_uri={RedirectURI}" +
-                $"&display=page" +
-                $"&revoke=1" + 
-                $"&response_type=token" +
-                $"&v=5.104");
-
-            navigation.NavigationRedirected += (s, ev) =>
+            try
             {
-                string uri = ev.Url;
-                Debug.WriteLine(uri);
-                if (!uri.StartsWith(RedirectURI)) return;
-                var parameters = (from param in uri.Split('#')[1].Split('&')
-                                  let parts = param.Split('=')
-                                  select new
-                                  {
-                                      Name = parts[0],
-                                      Value = parts[1]
-                                  }
-                                  ).ToDictionary(v => v.Name, v => v.Value);
-                Token = parameters["access_token"];
-
-                Debug.WriteLine(Token);
+                WebRequest request = WebRequest.Create(GetRequestURI);
+                WebResponse response = await request.GetResponseAsync();
+                JSON = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                response.Close();
                 GetRequestURI = "https://api.vk.com/method/";
-
-                /*
-                string template = "https://api.vk.com/method/{0}?{1}&access_token={2}&v=5.104";
-                var client = new WebClient { Encoding = Encoding.UTF8 };
-                string json = client.DownloadString(string.Format(template, tbMethod.Text, "HELLO WORLD", Token));
-                JObject jsonObject = JObject.Parse(json);
-                //tbLog.Text = jsonObject.ToString();
-                */
-            };
-        }
-        private static async Task GET_Request_Async(string getrequest)
-        {
-            WebRequest request = WebRequest.Create(getrequest);
-            WebResponse response = await request.GetResponseAsync();
-            using (Stream stream = response.GetResponseStream())
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    Debug.WriteLine(reader.ReadToEnd());
-                }
             }
-            response.Close();
-            getrequest = "https://api.vk.com/method/";
+            catch { tbLog.Text = "get request failed, no retry"; }
         }
-        private void Addparams_Click(object sender, EventArgs e)
+        private void AddParams_Click(object sender, EventArgs e)
         {
-            //paramvalue.Add(apirequestparam.Text, apirequestvalue.Text);
             GetRequestURI += apirequestparam.Text + "=" + apirequestvalue.Text + "&";
             apirequestparam.Text = apirequestvalue.Text = "";
-            //apilink.Text = getrequest;
-            //foreach (KeyValuePair<string, string> pair in paramvalue) getrequest += pair.Key + "=" + pair.Value + "&";
         }
-        private async void Apirequestbutton_Click(object sender, EventArgs e)
+        private void SetRequest_Click(object sender, EventArgs e)
+        {
+            GetRequestURI += apirequest.Text + "?";
+            apirequest.Text = "";
+        }
+        private async void APIRequest_Click(object sender, EventArgs e)
         {
             GetRequestURI += "access_token=" + Token + "&v=" + APIversion;
             Debug.WriteLine(GetRequestURI);
-            await GET_Request_Async(GetRequestURI);
+            await GET_Request();
+            //foreach (KeyValuePair<string, string> pair in JsonConvert.DeserializeObject<Dictionary<string, string>>(JSON)) tbLog.Text += pair.Key + " - " + pair.Value + "\n"; //Debug.WriteLine(pair.Key, " - ", );
+            //JSON = String.Empty;
+            tbLog.Text = JSON;
         }
-
-        private void Setrequest_Click(object sender, EventArgs e)
-        {
-            GetRequestURI += apirequest.Text + "?";
-            //apilink.Text = getrequest;
-        }
+        private void Auth_Click(object sender, EventArgs e) { OAuthWindow oauth = new OAuthWindow(new OAuthDelegate(HandleToken)); oauth.Show(); }
         public fox()
         {
             InitializeComponent();
-            browser = engine.CreateBrowser();
-            browserView1.InitializeFrom(browser);
-            navigation = browser.Navigation;
         }
+
+
+
+
+
+
         //for (int i = 0; i < paramvalue.Count; i++) getrequest += methodparams[0, i] + "=" + methodparams[1, i] + "&";
 
 
