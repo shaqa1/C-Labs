@@ -6,12 +6,12 @@ using System.Windows.Forms;
 
 namespace lab3_v4
 {
-    static class FOXclient
+    static class foxMain
     {
         [STAThread]
         static void Main()
         {
-            GuidAttribute attribute = (GuidAttribute)typeof(FOXclient).Assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
+            GuidAttribute attribute = (GuidAttribute)typeof(foxMain).Assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
             using (Mutex mutex = new Mutex(false, @"Global\" + attribute.Value))
             {
                 if (!mutex.WaitOne(0, false))
