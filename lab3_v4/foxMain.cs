@@ -4,7 +4,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 
-namespace lab3_v4
+namespace foxclient
 {
     static class foxMain
     {

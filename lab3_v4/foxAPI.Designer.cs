@@ -1,4 +1,4 @@
-﻿namespace lab3_v4
+﻿namespace foxclient
 {
     partial class fox
     {
@@ -38,10 +38,10 @@
             this.apirequestvalue = new MetroFramework.Controls.MetroTextBox();
             this.addparams = new MetroFramework.Controls.MetroButton();
             this.apilink = new MetroFramework.Controls.MetroLabel();
-            this.tbLog = new MetroFramework.Controls.MetroTextBox();
+            this.im_log = new MetroFramework.Controls.MetroTextBox();
             this.message = new MetroFramework.Controls.MetroTextBox();
             this.sendmessage = new MetroFramework.Controls.MetroButton();
-            this.peer_id = new MetroFramework.Controls.MetroTextBox();
+            this.friendslist = new MetroFramework.Controls.MetroComboBox();
             this.SuspendLayout();
             // 
             // Tray_Icon
@@ -67,7 +67,7 @@
             this.apirequestkey.CustomButton.UseSelectable = true;
             this.apirequestkey.CustomButton.Visible = false;
             this.apirequestkey.Lines = new string[0];
-            this.apirequestkey.Location = new System.Drawing.Point(23, 101);
+            this.apirequestkey.Location = new System.Drawing.Point(476, 404);
             this.apirequestkey.MaxLength = 32767;
             this.apirequestkey.Name = "apirequestkey";
             this.apirequestkey.PasswordChar = '\0';
@@ -86,9 +86,9 @@
             // 
             // authbutton
             // 
-            this.authbutton.Location = new System.Drawing.Point(104, 72);
+            this.authbutton.Location = new System.Drawing.Point(372, 364);
             this.authbutton.Name = "authbutton";
-            this.authbutton.Size = new System.Drawing.Size(75, 23);
+            this.authbutton.Size = new System.Drawing.Size(67, 23);
             this.authbutton.TabIndex = 1;
             this.authbutton.Text = "Log In";
             this.authbutton.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -97,7 +97,7 @@
             // 
             // apirequestbutton
             // 
-            this.apirequestbutton.Location = new System.Drawing.Point(104, 159);
+            this.apirequestbutton.Location = new System.Drawing.Point(557, 375);
             this.apirequestbutton.Name = "apirequestbutton";
             this.apirequestbutton.Size = new System.Drawing.Size(75, 23);
             this.apirequestbutton.TabIndex = 2;
@@ -121,7 +121,7 @@
             this.apirequest.CustomButton.UseSelectable = true;
             this.apirequest.CustomButton.Visible = false;
             this.apirequest.Lines = new string[0];
-            this.apirequest.Location = new System.Drawing.Point(23, 72);
+            this.apirequest.Location = new System.Drawing.Point(476, 375);
             this.apirequest.MaxLength = 32767;
             this.apirequest.Name = "apirequest";
             this.apirequest.PasswordChar = '\0';
@@ -153,7 +153,7 @@
             this.apirequestvalue.CustomButton.UseSelectable = true;
             this.apirequestvalue.CustomButton.Visible = false;
             this.apirequestvalue.Lines = new string[0];
-            this.apirequestvalue.Location = new System.Drawing.Point(23, 130);
+            this.apirequestvalue.Location = new System.Drawing.Point(476, 433);
             this.apirequestvalue.MaxLength = 32767;
             this.apirequestvalue.Name = "apirequestvalue";
             this.apirequestvalue.PasswordChar = '\0';
@@ -172,7 +172,7 @@
             // 
             // addparams
             // 
-            this.addparams.Location = new System.Drawing.Point(104, 101);
+            this.addparams.Location = new System.Drawing.Point(557, 404);
             this.addparams.Name = "addparams";
             this.addparams.Size = new System.Drawing.Size(75, 52);
             this.addparams.TabIndex = 7;
@@ -189,37 +189,39 @@
             this.apilink.Size = new System.Drawing.Size(0, 0);
             this.apilink.TabIndex = 8;
             // 
-            // tbLog
+            // im_log
             // 
             // 
             // 
             // 
-            this.tbLog.CustomButton.Image = null;
-            this.tbLog.CustomButton.Location = new System.Drawing.Point(61, 2);
-            this.tbLog.CustomButton.Name = "";
-            this.tbLog.CustomButton.Size = new System.Drawing.Size(209, 209);
-            this.tbLog.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
-            this.tbLog.CustomButton.TabIndex = 1;
-            this.tbLog.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.tbLog.CustomButton.UseSelectable = true;
-            this.tbLog.CustomButton.Visible = false;
-            this.tbLog.Lines = new string[0];
-            this.tbLog.Location = new System.Drawing.Point(23, 188);
-            this.tbLog.MaxLength = 32767;
-            this.tbLog.Multiline = true;
-            this.tbLog.Name = "tbLog";
-            this.tbLog.PasswordChar = '\0';
-            this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.tbLog.SelectedText = "";
-            this.tbLog.SelectionLength = 0;
-            this.tbLog.SelectionStart = 0;
-            this.tbLog.ShortcutsEnabled = true;
-            this.tbLog.Size = new System.Drawing.Size(273, 214);
-            this.tbLog.TabIndex = 10;
-            this.tbLog.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.tbLog.UseSelectable = true;
-            this.tbLog.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
-            this.tbLog.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.im_log.CustomButton.Image = null;
+            this.im_log.CustomButton.Location = new System.Drawing.Point(35, 1);
+            this.im_log.CustomButton.Name = "";
+            this.im_log.CustomButton.Size = new System.Drawing.Size(307, 307);
+            this.im_log.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
+            this.im_log.CustomButton.TabIndex = 1;
+            this.im_log.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
+            this.im_log.CustomButton.UseSelectable = true;
+            this.im_log.CustomButton.Visible = false;
+            this.im_log.FontSize = MetroFramework.MetroTextBoxSize.Medium;
+            this.im_log.Lines = new string[0];
+            this.im_log.Location = new System.Drawing.Point(23, 107);
+            this.im_log.MaxLength = 32767;
+            this.im_log.Multiline = true;
+            this.im_log.Name = "im_log";
+            this.im_log.PasswordChar = '\0';
+            this.im_log.ReadOnly = true;
+            this.im_log.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.im_log.SelectedText = "";
+            this.im_log.SelectionLength = 0;
+            this.im_log.SelectionStart = 0;
+            this.im_log.ShortcutsEnabled = true;
+            this.im_log.Size = new System.Drawing.Size(343, 309);
+            this.im_log.TabIndex = 10;
+            this.im_log.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.im_log.UseSelectable = true;
+            this.im_log.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
+            this.im_log.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
             // 
             // message
             // 
@@ -227,9 +229,9 @@
             // 
             // 
             this.message.CustomButton.Image = null;
-            this.message.CustomButton.Location = new System.Drawing.Point(76, 2);
+            this.message.CustomButton.Location = new System.Drawing.Point(311, 2);
             this.message.CustomButton.Name = "";
-            this.message.CustomButton.Size = new System.Drawing.Size(105, 105);
+            this.message.CustomButton.Size = new System.Drawing.Size(29, 29);
             this.message.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
             this.message.CustomButton.TabIndex = 1;
             this.message.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
@@ -237,7 +239,7 @@
             this.message.CustomButton.Visible = false;
             this.message.FontSize = MetroFramework.MetroTextBoxSize.Medium;
             this.message.Lines = new string[0];
-            this.message.Location = new System.Drawing.Point(185, 72);
+            this.message.Location = new System.Drawing.Point(23, 422);
             this.message.MaxLength = 32767;
             this.message.Multiline = true;
             this.message.Name = "message";
@@ -247,7 +249,7 @@
             this.message.SelectionLength = 0;
             this.message.SelectionStart = 0;
             this.message.ShortcutsEnabled = true;
-            this.message.Size = new System.Drawing.Size(184, 110);
+            this.message.Size = new System.Drawing.Size(343, 34);
             this.message.Style = MetroFramework.MetroColorStyle.Black;
             this.message.TabIndex = 11;
             this.message.Theme = MetroFramework.MetroThemeStyle.Dark;
@@ -259,9 +261,9 @@
             // sendmessage
             // 
             this.sendmessage.FontSize = MetroFramework.MetroButtonSize.Tall;
-            this.sendmessage.Location = new System.Drawing.Point(302, 188);
+            this.sendmessage.Location = new System.Drawing.Point(372, 422);
             this.sendmessage.Name = "sendmessage";
-            this.sendmessage.Size = new System.Drawing.Size(67, 55);
+            this.sendmessage.Size = new System.Drawing.Size(67, 34);
             this.sendmessage.Style = MetroFramework.MetroColorStyle.Black;
             this.sendmessage.TabIndex = 12;
             this.sendmessage.Text = ">";
@@ -269,49 +271,28 @@
             this.sendmessage.UseSelectable = true;
             this.sendmessage.Click += new System.EventHandler(this.SendMessage_Click);
             // 
-            // peer_id
+            // friendslist
             // 
-            // 
-            // 
-            // 
-            this.peer_id.CustomButton.Image = null;
-            this.peer_id.CustomButton.Location = new System.Drawing.Point(53, 1);
-            this.peer_id.CustomButton.Name = "";
-            this.peer_id.CustomButton.Size = new System.Drawing.Size(21, 21);
-            this.peer_id.CustomButton.Style = MetroFramework.MetroColorStyle.Blue;
-            this.peer_id.CustomButton.TabIndex = 1;
-            this.peer_id.CustomButton.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.peer_id.CustomButton.UseSelectable = true;
-            this.peer_id.CustomButton.Visible = false;
-            this.peer_id.Lines = new string[] {
-        "193640924"};
-            this.peer_id.Location = new System.Drawing.Point(23, 159);
-            this.peer_id.MaxLength = 32767;
-            this.peer_id.Name = "peer_id";
-            this.peer_id.PasswordChar = '\0';
-            this.peer_id.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.peer_id.SelectedText = "";
-            this.peer_id.SelectionLength = 0;
-            this.peer_id.SelectionStart = 0;
-            this.peer_id.ShortcutsEnabled = true;
-            this.peer_id.Size = new System.Drawing.Size(75, 23);
-            this.peer_id.Style = MetroFramework.MetroColorStyle.Black;
-            this.peer_id.TabIndex = 13;
-            this.peer_id.Text = "193640924";
-            this.peer_id.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.peer_id.UseSelectable = true;
-            this.peer_id.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
-            this.peer_id.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
+            this.friendslist.FormattingEnabled = true;
+            this.friendslist.ItemHeight = 23;
+            this.friendslist.Location = new System.Drawing.Point(24, 72);
+            this.friendslist.Name = "friendslist";
+            this.friendslist.Size = new System.Drawing.Size(342, 29);
+            this.friendslist.Style = MetroFramework.MetroColorStyle.Black;
+            this.friendslist.TabIndex = 15;
+            this.friendslist.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.friendslist.UseSelectable = true;
+            this.friendslist.SelectedIndexChanged += new System.EventHandler(this.Friendslist_SelectedIndexChanged);
             // 
             // fox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(655, 482);
-            this.Controls.Add(this.peer_id);
+            this.Controls.Add(this.friendslist);
             this.Controls.Add(this.sendmessage);
             this.Controls.Add(this.message);
-            this.Controls.Add(this.tbLog);
+            this.Controls.Add(this.im_log);
             this.Controls.Add(this.apilink);
             this.Controls.Add(this.addparams);
             this.Controls.Add(this.apirequestvalue);
@@ -341,10 +322,10 @@
         private MetroFramework.Controls.MetroTextBox apirequestvalue;
         private MetroFramework.Controls.MetroButton addparams;
         private MetroFramework.Controls.MetroLabel apilink;
-        private MetroFramework.Controls.MetroTextBox tbLog;
+        private MetroFramework.Controls.MetroTextBox im_log;
         private MetroFramework.Controls.MetroTextBox message;
         private MetroFramework.Controls.MetroButton sendmessage;
-        private MetroFramework.Controls.MetroTextBox peer_id;
+        private MetroFramework.Controls.MetroComboBox friendslist;
     }
 }
 

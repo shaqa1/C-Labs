@@ -3,21 +3,21 @@ using System.Windows.Forms;
 using MetroFramework.Forms;
 using DotNetBrowser.Browser;
 using DotNetBrowser.Navigation;
-using static lab3_v4.fox;
+using static foxclient.fox;
 
-namespace lab3_v4
+namespace foxclient
 {
     public partial class OAuthWindow : MetroForm
     {
         private IBrowser browser;
         private INavigation navigation;
         private static string accesstoken = String.Empty;
-        internal const string OAuthURI = "https://oauth.vk.com/authorize";
-        internal const string RedirectURI = "https://oauth.vk.com/blank.html";
-        internal const int APPid = 2685278; //7482854; //currently using kate mobile appid
-        internal const string ScopeParameters = "‭notify,friends,photos,audio,video,stories,pages,status,notes,messages,wall,ads,offline,docs,groups,notifications,stats,email,market";
-        internal const string OAuthType = "mobile";
-        public OAuthWindow(OAuthDelegate sender)
+        private const string OAuthURI = "https://oauth.vk.com/authorize";
+        private const string RedirectURI = "https://oauth.vk.com/blank.html";
+        private const int APPid = 2685278; //7482854; //currently using kate mobile appid
+        private const string ScopeParameters = "‭notify,friends,photos,audio,video,stories,pages,status,notes,messages,wall,ads,offline,docs,groups,notifications,stats,email,market";
+        private const string OAuthType = "mobile";
+        internal OAuthWindow(OAuthDelegate sender)
         {
             InitializeComponent();
             browser = fox.engine.CreateBrowser();

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace foxclient.Properties
+namespace lab3_v2.Properties
 {
 
 

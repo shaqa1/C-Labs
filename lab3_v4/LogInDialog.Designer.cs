@@ -1,4 +1,4 @@
-﻿namespace lab3_v4
+﻿namespace foxclient
 {
     partial class OAuthWindow
     {
@@ -34,16 +34,16 @@
             // 
             // authwindow
             // 
-            this.authwindow.Location = new System.Drawing.Point(0, 60);
+            this.authwindow.Location = new System.Drawing.Point(-1, 60);
             this.authwindow.Name = "authwindow";
-            this.authwindow.Size = new System.Drawing.Size(560, 286);
+            this.authwindow.Size = new System.Drawing.Size(562, 341);
             this.authwindow.TabIndex = 5;
             // 
             // OAuthWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(560, 345);
+            this.ClientSize = new System.Drawing.Size(560, 365);
             this.Controls.Add(this.authwindow);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
