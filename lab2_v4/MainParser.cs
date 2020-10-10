@@ -31,14 +31,13 @@ namespace lab2_v4
             }
             if (SearchDepth > 0)
             {
-                //regex param to sort out href=" " fields
                 Regex hrefregex = new Regex("(href\\s*=\\s*(?:\"|')(.*?)(?:\"|'))", RegexOptions.IgnoreCase);
                 Match hrefmatch;
-                hrefmatch = hrefregex.Match(HTMLcode); //searching for string that matches regex base
+                hrefmatch = hrefregex.Match(HTMLcode);
                 while (hrefmatch.Success)
                 {
-                    string href = hrefmatch.Value.Substring(5).Trim('"', ' '); //trimming out href="" chars
-                    if (href.StartsWith("/")) href = uri.GetLeftPart(UriPartial.Authority) + href; //some hrefs are in /ru/smth format
+                    string href = hrefmatch.Value.Substring(5).Trim('"', ' ');
+                    if (href.StartsWith("/")) href = uri.GetLeftPart(UriPartial.Authority) + href;
                     if (href.Contains(uri.GetLeftPart(UriPartial.Authority)) && href != URI) SearchForContacts(href, SearchDepth--);
                     hrefmatch = hrefmatch.NextMatch();
                 }
@@ -66,7 +65,7 @@ namespace lab2_v4
                     {
                         using (StreamWriter file = new StreamWriter(filename, true))
                         {
-                            file.WriteLine("Address,Phonermation,Depth,URI\n"); //set the header of .csv file
+                            file.WriteLine("Address,Phonermation,Depth,URI\n");
                         }
                         ClearDraw("File will be accessible via path: \"" + filename + "\"");
                     }

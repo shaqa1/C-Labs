@@ -18,9 +18,9 @@ namespace foxclient
         internal delegate void OAuthDelegate(string accesstoken);
         internal const string APIversion = "5.103";
         private const string APIlink = "https://api.vk.com/method/";
-        private string GetRequestParams = String.Empty;
+        private string RequestParams = String.Empty;
         private static string Token = String.Empty;
-        private static string GET_Response = String.Empty;
+        private static string Response = String.Empty;
         private static string SelectedFriendID = String.Empty;
         private static string UserID = String.Empty;
         PollServerResponse pollresponse = new PollServerResponse();
@@ -51,18 +51,18 @@ namespace foxclient
             SelectedFriendID = friendslist.SelectedValue.ToString();
             Invoke((MethodInvoker)(() => { im_log.Text = String.Empty; }));
         }
-        private void AddParams(string[,] keyvalue) { for (int i = 0; i < keyvalue.Length / 2; i++) GetRequestParams += keyvalue[i, 0] + "=" + keyvalue[i, 1] + "&"; }
+        private void AddParams(string[,] keyvalue) { for (int i = 0; i < keyvalue.Length / 2; i++) RequestParams += keyvalue[i, 0] + "=" + keyvalue[i, 1] + "&"; }
         private async void APIRequest()
         {
-            GetRequestParams = String.Empty;
-            await GET_Request($"{APIlink}{apirequest.Text}?{GetRequestParams}access_token={Token}&v={APIversion}");
-            GET_Response = String.Empty;
+            RequestParams = String.Empty;
+            await GET_Request($"{apirequest.Text}?{RequestParams}");
+            Response = String.Empty;
         }
         private async void SendMessage()
         {
-            GetRequestParams = String.Empty;
-            await GET_Request($"{APIlink}messages.send?random_id={new Random().Next(999, 999999)}&peer_id={friendslist.SelectedValue.ToString()}&{GetRequestParams}message={message.Text}&access_token={Token}&v={APIversion}");
-            GET_Response = message.Text = String.Empty;
+            RequestParams = String.Empty;
+            await GET_Request($"messages.send?random_id={new Random().Next(999, 999999)}&peer_id={friendslist.SelectedValue.ToString()}&{RequestParams}message={message.Text}&");
+            Response = message.Text = String.Empty;
         }
         private void ShowMessagesUpdates(string imupdates)
         {
@@ -80,28 +80,16 @@ namespace foxclient
         {
             while (true)
             {
-                await GET_Request($"{APIlink}messages.getLongPollHistory?ts={pollresponse.response["ts"]}&pts={pollresponse.response["pts"]}&preview_length=0&fields=online,screen_name&events_limit=1000&msgs_limit=200&last_n=0&lp_version=2&access_token={Token}&v={APIversion}");
-                ShowMessagesUpdates(GET_Response);
-                GET_Response = String.Empty;
+                await GET_Request($"messages.getLongPollHistory?ts={pollresponse.response["ts"]}&pts={pollresponse.response["pts"]}&preview_length=0&fields=online,screen_name&events_limit=1000&msgs_limit=200&last_n=0&lp_version=2&");
+                ShowMessagesUpdates(Response);
+                Response = String.Empty;
                 await Task.Delay(500);
             }
         }
-        private async Task GET_Request(string RequestURI)
-        {
-            try
-            {
-                WebRequest request = WebRequest.Create(RequestURI);
-                WebResponse response = await request.GetResponseAsync();
-                GET_Response = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                response.Close();
-            }
-            catch { }
-            GC.Collect();
-        }
         private async Task FetchFriends()
         {
-            await GET_Request($"{APIlink}friends.get?order=name&count=5000&fields=domain&access_token={Token}&v={APIversion}");
-            dynamic friendsresponse = JObject.Parse(GET_Response);
+            await GET_Request($"friends.get?order=name&count=5000&fields=domain&");
+            dynamic friendsresponse = JObject.Parse(Response);
             var fields = friendsresponse.response;
             for (int i = 0; i < Convert.ToInt32(fields.count); i++)
             {
@@ -121,16 +109,43 @@ namespace foxclient
         private async void HandleToken(string accesstoken)
         {
             Token = accesstoken;
-            await GET_Request($"{APIlink}users.get?access_token={Token}&v={APIversion}");
-            dynamic obj = JObject.Parse(GET_Response);
+            Debug.WriteLine(Token);
+            await POST_Request($"users.get?");
+            dynamic obj = JObject.Parse(Response);
             var fields = obj.response[0];
             UserID = fields.id;
             await FetchFriends();
-            await GET_Request($"{APIlink}messages.getLongPollServer?need_pts=1&lp_version=2&access_token={Token}&v={APIversion}");
-            pollresponse = JsonConvert.DeserializeObject<PollServerResponse>(GET_Response);
+            await GET_Request($"messages.getLongPollServer?need_pts=1&lp_version=2&");
+            pollresponse = JsonConvert.DeserializeObject<PollServerResponse>(Response);
             LongPoll();
         }
         private void OAuthenticate() { OAuthWindow oauth = new OAuthWindow(new OAuthDelegate(HandleToken)); oauth.Show(); }
+        private static async Task POST_Request(string requestparameters)
+        {
+            WebRequest request = WebRequest.Create("https://api.vk.com/method/");
+            byte[] parambytearray = System.Text.Encoding.UTF8.GetBytes($"{requestparameters}access_token={Token}&v={APIversion}");
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = parambytearray.Length;
+            request.GetRequestStream().Write(parambytearray, 0, parambytearray.Length);
+            WebResponse response = await request.GetResponseAsync();
+            Response = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            response.Close();
+            GC.Collect();
+        }
+        private static async Task GET_Request(string requestparameters)
+        {
+            try
+            {
+                //Debug.WriteLine($"{APIlink}{requestparameters}access_token={Token}&v={APIversion}");
+                WebRequest request = WebRequest.Create($"{APIlink}{requestparameters}access_token={Token}&v={APIversion}");
+                WebResponse response = await request.GetResponseAsync();
+                Response = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                response.Close();
+            }
+            catch { }
+            GC.Collect();
+        }
         public fox()
         {
             InitializeComponent();
